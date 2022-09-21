@@ -48,6 +48,11 @@ const userSchema = new mongoose.Schema({
   resetPasswordExpire: Date,
 });
 
+// compare user password
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
 // encrypting password before saving user
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
