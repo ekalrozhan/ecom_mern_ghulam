@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
 
   password: {
     type: String,
-    required: [true, "Please enter your passwoor"],
+    required: [true, "Please enter your password"],
     minLength: [6, "Your password be longer than 6 characters"],
     select: false,
   },
@@ -73,16 +73,18 @@ userSchema.methods.getJwtToken = function () {
 // generate password reset token
 userSchema.methods.getResetPasswordToken = function () {
   // Generate token
-  const resetToken = crypto.randomBytes(20).toString('hex');
+  const resetToken = crypto.randomBytes(20).toString("hex");
 
   // Hash and set to resetPasswordToken
-  this.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex')
+  this.resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
 
   // Set token expire time
-  this.resetPasswordExpire = Date.now() + 30 * 60 * 1000
+  this.resetPasswordExpire = Date.now() + 30 * 60 * 1000;
 
-  return resetToken
-
-}
+  return resetToken;
+};
 
 module.exports = mongoose.model("User", userSchema);
